@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+
+import NavigationBar from "./components/NavBar/navigationBar";
+import Movies from "./pages/Movies";
+import Favourites from "./pages/Favourites";
+import MovieDetails from "./pages/MovieDetails";
+import NotFound from "./pages/NotFound";
+import LanguageContext from "./context/language";
+import {useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [language, setLanguage] = useState("en-US")
+
+    return (
+        <BrowserRouter>
+            <LanguageContext.Provider value={{language, setLanguage}}>
+                <NavigationBar/>
+                <Routes>
+                    <Route path="/" element={<Movies/>}/>
+                    <Route path="/movies" element={<Movies/>}/>
+                    <Route path="/movies/:movieId" element={<MovieDetails/>}/>
+                    <Route path="/favourites" element={<Favourites/>}/>
+                    <Route path="*" element={<NotFound/>}/>
+                </Routes>
+            </LanguageContext.Provider>
+        </BrowserRouter>
+    );
 }
 
 export default App;
